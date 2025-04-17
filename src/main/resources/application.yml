@@ -11,7 +11,7 @@ hubspot:
   redirect-uri: http://localhost:8080/oauth/callback
   auth-url: https://app.hubspot.com/oauth/authorize
   token-url: https://api.hubapi.com/oauth/v1/token
-  scopes: oauth
+  scopes: oauth crm.objects.contacts.write crm.objects.contacts.read
 
 logging:
   level:
