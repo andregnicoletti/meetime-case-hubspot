@@ -42,7 +42,7 @@ public class OAuthController {
         TokenResponseDTO token = oauthService.exchangeCodeForToken(code);
 
         // Aqui você define a chave — por enquanto usamos "default" (você pode usar o email no futuro)
-        tokenStore.storeToken("default", token.getAccessToken());
+        tokenStore.storeToken(token.getAccessToken());
 
         return ResponseEntity.ok(token);
     }
