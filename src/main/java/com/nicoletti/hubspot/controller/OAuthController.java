@@ -1,6 +1,8 @@
 package com.nicoletti.hubspot.controller;
 
 import com.nicoletti.hubspot.config.HubspotProperties;
+import com.nicoletti.hubspot.dto.TokenResponseDTO;
+import com.nicoletti.hubspot.service.OAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 public class OAuthController {
 
     private final HubspotProperties hubspotProperties;
+    private final OAuthService oauthService;
 
     @GetMapping("/authorize")
     public ResponseEntity<String> getAuthorizationUrl() {
@@ -27,4 +30,11 @@ public class OAuthController {
 
         return ResponseEntity.ok(url);
     }
+
+    @GetMapping("/callback")
+    public ResponseEntity<TokenResponseDTO> handleCallback(@RequestParam("code") String code) {
+        TokenResponseDTO token = oauthService.exchangeCodeForToken(code);
+        return ResponseEntity.ok(token);
+    }
+
 }
