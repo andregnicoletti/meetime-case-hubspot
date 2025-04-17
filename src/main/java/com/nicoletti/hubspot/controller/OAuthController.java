@@ -15,18 +15,22 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 public class OAuthController {
 
+    private static final String URL_PATTERN = "https://app.hubspot.com/oauth/authorize?client_id=%s&redirect_uri=%s&scope=%s";
+
     private final HubspotProperties hubspotProperties;
     private final OAuthService oauthService;
 
     @GetMapping("/authorize")
     public ResponseEntity<String> getAuthorizationUrl() {
+
         String url = String.format(
-                "%s?client_id=%s&redirect_uri=%s&scope=%s&response_type=code",
-                hubspotProperties.getAuthUrl(),
+                URL_PATTERN,
                 hubspotProperties.getClientId(),
-                URLEncoder.encode(hubspotProperties.getRedirectUri(), StandardCharsets.UTF_8),
-                URLEncoder.encode(hubspotProperties.getScopes(), StandardCharsets.UTF_8)
+                hubspotProperties.getRedirectUri(),
+                hubspotProperties.getScopes()
         );
+
+        System.out.println("url: " + url);
 
         return ResponseEntity.ok(url);
     }

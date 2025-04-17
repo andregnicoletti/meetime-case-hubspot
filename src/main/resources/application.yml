@@ -6,12 +6,12 @@ server:
   port: 8080
 
 hubspot:
-  client-id: ${HUBSPOT_CLIENT_ID}
-  client-secret: ${HUBSPOT_CLIENT_SECRET}
+  client-id: ${HUBSPOT_CLIENT_ID:8b9eca77-4212-4416-bf9e-e89696705a3d}
+  client-secret: ${HUBSPOT_CLIENT_SECRET:352d3d9f-fef9-4e99-bd07-c773802b4bd0}
   redirect-uri: http://localhost:8080/oauth/callback
   auth-url: https://app.hubspot.com/oauth/authorize
   token-url: https://api.hubapi.com/oauth/v1/token
-  scopes: contacts
+  scopes: oauth
 
 logging:
   level:
