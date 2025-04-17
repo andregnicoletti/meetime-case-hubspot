@@ -1,14 +1,15 @@
 package com.nicoletti.hubspot.controller;
 
+import com.nicoletti.hubspot.auth.TokenStore;
 import com.nicoletti.hubspot.config.HubspotProperties;
 import com.nicoletti.hubspot.dto.TokenResponseDTO;
 import com.nicoletti.hubspot.service.OAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/oauth")
@@ -19,6 +20,7 @@ public class OAuthController {
 
     private final HubspotProperties hubspotProperties;
     private final OAuthService oauthService;
+    private final TokenStore tokenStore;
 
     @GetMapping("/authorize")
     public ResponseEntity<String> getAuthorizationUrl() {
@@ -38,6 +40,10 @@ public class OAuthController {
     @GetMapping("/callback")
     public ResponseEntity<TokenResponseDTO> handleCallback(@RequestParam("code") String code) {
         TokenResponseDTO token = oauthService.exchangeCodeForToken(code);
+
+        // Aqui você define a chave — por enquanto usamos "default" (você pode usar o email no futuro)
+        tokenStore.storeToken("default", token.getAccessToken());
+
         return ResponseEntity.ok(token);
     }
 
