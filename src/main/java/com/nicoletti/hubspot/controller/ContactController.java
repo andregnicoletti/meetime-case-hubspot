@@ -13,7 +13,6 @@ public class ContactController {
 
     private final HubspotClientService hubspotClientService;
 
-
     @PostMapping
     public ResponseEntity<String> createContact(@RequestBody CreateContactRequestDTO dto) {
         return hubspotClientService.createContact(dto);
