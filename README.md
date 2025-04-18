@@ -1,6 +1,6 @@
 # HubSpot Integration
 
-Projeto em Spring Boot para integração OAuth2 com a API do HubSpot. Permite autenticar via OAuth, obter `access_token`, criar e listar contatos, e receber webhooks de criação de contatos.
+Projeto em Spring Boot que realiza a integração com a API do HubSpot, permitindo autenticação via OAuth2, criação e listagem de contatos, além de receber webhooks. A API é documentada com Swagger (SpringDoc OpenAPI).
 
 ---
 
@@ -9,145 +9,143 @@ Projeto em Spring Boot para integração OAuth2 com a API do HubSpot. Permite au
 - Java 21
 - Spring Boot 3.4.4
 - Spring Security (OAuth2 Client)
+- SpringDoc OpenAPI (Swagger UI)
 - Lombok
 - Maven
-- ngrok (para expor aplicação local)
+- ngrok (para testes locais com webhooks)
 
 ---
 
 ## ✅ Funcionalidades Implementadas
 
-- [x] Autenticação OAuth2 via HubSpot
-- [x] Troca de código de autorização por `access_token` e `refresh_token`
-- [x] Armazenamento de token em memória (`TokenStore`)
-- [x] Criação de contatos via API do HubSpot
-- [x] Listagem de contatos com token armazenado
-- [x] Recebimento de Webhooks (ex: `contact.creation`)
-- [x] Log de eventos recebidos no webhook
+- [x] OAuth2 com troca de código por `access_token`
+- [x] Armazenamento de token em memória
+- [x] Criação de contato via `POST /contacts`
+- [x] Listagem de contatos via `GET /contacts`
+- [x] Recebimento de webhooks `contact.creation` via `POST /webhook`
+- [x] Integração com Swagger UI em `/docs`
 
 ---
 
-## 🔐 Fluxo de Autenticação
+## 📌 Endpoints disponíveis
 
-1. O usuário acessa:
-   ```
-   GET /authorize
-   ```
-   Redireciona para o login do HubSpot.
-
-2. Após login, é redirecionado para:
-   ```
-   GET /oauth/callback?code=...
-   ```
-   O código é trocado por um token, armazenado em memória.
+| Método | Rota         | Descrição                                 | Exemplo de Body |
+|--------|--------------|--------------------------------------------|-----------------|
+| POST   | `/contacts`  | Cria um novo contato no HubSpot           | `{ "firstName": "André", "lastName": "Nicoletti", "email": "andre@exemplo.com" }` |
+| GET    | `/contacts`  | Lista os contatos cadastrados             | —               |
+| GET    | `/oauth/authorize` | Redireciona para autenticação OAuth2 | —               |
+| GET    | `/oauth/callback`  | Recebe o código e troca pelo token    | —               |
+| POST   | `/webhook`   | Recebe evento de criação de contato       | `[ { "eventId": 100, "subscriptionType": "contact.creation", "objectId": 123456 } ]` |
+| GET    | `/docs`      | Interface Swagger com documentação da API | —               |
 
 ---
 
-## 📡 Criar Contato
+## 🔐 Exemplo de Autenticação
 
-Endpoint:
+1. Acesse `/oauth/authorize` no navegador
+2. Após o login no HubSpot, será redirecionado para `/oauth/callback?code=...`
+3. O `access_token` é armazenado internamente e usado automaticamente nos próximos requests
+
+---
+
+## 📑 Documentação da API (Swagger)
+
+Acesse:
+
 ```
-POST /contacts
+http://localhost:8080/docs
 ```
 
-### Payload:
+Lá você verá a documentação completa gerada via SpringDoc OpenAPI com exemplos de requisição, schemas e parâmetros.
 
-```json
-{
-  "firstName": "André",
-  "lastName": "Nicoletti",
-  "email": "andre@exemplo.com"
+Se necessário, customize o título e descrição em `OpenApiConfig.java`:
+
+```java
+@Bean
+public OpenAPI customOpenAPI() {
+    return new OpenAPI()
+        .info(new Info()
+            .title("HubSpot Integration API")
+            .version("1.0")
+            .description("Documentação da API de integração com HubSpot"));
 }
 ```
 
-Usa o `access_token` armazenado automaticamente.
-
 ---
 
-## 📃 Listar Contatos
-
-Endpoint:
-```
-GET /contacts
-```
-
-Retorna os contatos cadastrados na conta HubSpot autenticada.
-
----
-
-## 📬 Receber Webhook
-
-Endpoint:
-```
-POST /webhook
-```
-
-Recebe eventos de criação de contato (`contact.creation`) da plataforma HubSpot.
-
-### Exemplo de Payload:
-
-```json
-[
-  {
-    "subscriptionType": "contact.creation",
-    "objectId": 123456789,
-    "occurredAt": 1744931960182
-  }
-]
-```
-
----
-
-## ⚙️ Configuração
-
-### `application.yml`
+## ⚙️ Configuração (application.yml)
 
 ```yaml
+springdoc:
+   swagger-ui:
+      path: /docs
 hubspot:
-  client-id: ${HUBSPOT_CLIENT_ID}
-  client-secret: ${HUBSPOT_CLIENT_SECRET}
-  redirect-uri: http://localhost:8080/oauth/callback
-  auth-url: https://app.hubspot.com/oauth/authorize
-  token-url: https://api.hubapi.com/oauth/v1/token
-  scopes: crm.objects.contacts.write crm.objects.contacts.read
+   client-id: ${HUBSPOT_CLIENT_ID}
+   client-secret: ${HUBSPOT_CLIENT_SECRET}
+   redirect-uri: http://localhost:8080/oauth/callback
+   auth-url: https://app.hubspot.com/oauth/authorize
+   token-url: https://api.hubapi.com/oauth/v1/token
+   scopes: crm.objects.contacts.write crm.objects.contacts.read
 ```
+
+---
+
+## 🚀 Como executar o projeto
+
+### 1. Build do projeto
+
+```bash
+./mvnw clean install
+```
+
+### 2. Rodar localmente
+
+```bash
+./mvnw spring-boot:run
+```
+
+O serviço estará disponível em `http://localhost:8080`.
 
 ---
 
 ## 🌍 Testar Webhooks com ngrok
 
-1. Rode o app local:
-   ```bash
-   ./mvnw spring-boot:run
-   ```
+### 1. Instalar ngrok
 
-2. Exponha com ngrok:
-   ```bash
-   ngrok http 8080
-   ```
+```bash
+snap install ngrok
+```
 
-3. Copie a URL gerada e configure no painel do seu app HubSpot:
-   ```
-   https://xxxxxx.ngrok.io/webhook
-   ```
+Ou baixe em: https://ngrok.com/download
+
+### 2. Iniciar túnel
+
+```bash
+ngrok http 8080
+```
+
+Isso gerará uma URL pública como:
+
+```
+https://abcd1234.ngrok.io
+```
+
+### 3. Configurar no HubSpot
+
+No painel do app, configure a URL do webhook como:
+
+```
+https://abcd1234.ngrok.io/webhook
+```
 
 ---
 
-## 📌 Próximos Passos
+## 📎 Referências
 
-- [ ] Buscar detalhes do contato automaticamente ao receber `objectId` via webhook
-- [ ] Implementar renovação automática do `access_token` via `refresh_token`
-- [ ] Melhorar validações e tratamento de erros
-- [ ] Adicionar testes unitários
-- [ ] Persistir tokens em banco de dados
-
----
-
-## 📎 Documentação oficial
-
-- https://developers.hubspot.com/docs/api/oauth
-- https://developers.hubspot.com/docs/api/crm/contacts
-- https://developers.hubspot.com/docs/guides/api/app-management/webhooks
+- [HubSpot API Docs](https://developers.hubspot.com/docs/api/crm/contacts)
+- [OAuth2 Guide](https://developers.hubspot.com/docs/api/oauth)
+- [Webhooks](https://developers.hubspot.com/docs/guides/api/app-management/webhooks)
+- [SpringDoc OpenAPI](https://springdoc.org)
 
 ---
 
