@@ -44,3 +44,6 @@ build/
 *.ipr
 *.iws
 out/
+
+### ENV ###
+env
