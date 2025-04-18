@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("/oauth")
@@ -23,7 +24,7 @@ public class OAuthController {
     private final TokenStore tokenStore;
 
     @GetMapping("/authorize")
-    public ResponseEntity<String> getAuthorizationUrl() {
+    public RedirectView redirectToHubspotAuth() {
 
         String url = String.format(
                 URL_PATTERN,
@@ -32,17 +33,15 @@ public class OAuthController {
                 hubspotProperties.getScopes()
         );
 
-        System.out.println("url: " + url);
-
-        return ResponseEntity.ok(url);
+        return new RedirectView(url);
     }
 
     @GetMapping("/callback")
     public ResponseEntity<TokenResponseDTO> handleCallback(@RequestParam("code") String code) {
         TokenResponseDTO token = oauthService.exchangeCodeForToken(code);
 
-        // Aqui você define a chave — por enquanto usamos "default" (você pode usar o email no futuro)
-        tokenStore.storeToken(token.getAccessToken());
+        // TODO chave usada é "default" podendo ser alterada por outras
+        tokenStore.storeToken("default",token.getAccessToken());
 
         return ResponseEntity.ok(token);
     }
