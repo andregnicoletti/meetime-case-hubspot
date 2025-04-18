@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -16,8 +17,8 @@ public class WebhookController {
     private final WebhookService webhookService;
 
     @PostMapping
-    public ResponseEntity<String> handleWebhook(@RequestBody Map<String, Object> payload, HttpServletRequest request) {
-        webhookService.processWebhook(payload);
+    public ResponseEntity<String> handleWebhook(@RequestBody List<Map<String, Object>> payloadList) {
+        payloadList.forEach(webhookService::processWebhook);
         return ResponseEntity.ok("Webhook recebido com sucesso");
     }
 }

@@ -19,6 +19,7 @@
 
 	<properties>
 		<java.version>21</java.version>
+		<json.version>20250107</json.version>
 	</properties>
 
 	<url/>
@@ -55,6 +56,13 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
+		</dependency>
+
+		<!-- JSON -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>${json.version}</version>
 		</dependency>
 
 		<!-- Logging -->

@@ -1,6 +1,7 @@
 package com.nicoletti.hubspot.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -10,13 +11,8 @@ import java.util.Map;
 public class WebhookService {
 
     public void processWebhook(Map<String, Object> payload) {
-        log.info("Recebido Webhook de criação de contato: {}", payload);
 
-        // Exemplo de extração de evento:
-        // payload pode ser uma lista de eventos [{ "eventType": "contact.creation", "objectId": 1234, ... }]
-        // Aqui você pode validar tipo de evento e tratar
+        log.info("Recebido Webhook de criação de contato: {}", new JSONObject(payload).toString(4));
 
-        // TODO: Validar assinatura, se necessário
-        // TODO: Processar dados relevantes (ex: salvar em banco ou outra ação)
     }
 }
