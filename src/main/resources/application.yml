@@ -13,6 +13,13 @@ hubspot:
   token-url: https://api.hubapi.com/oauth/v1/token
   scopes: oauth crm.objects.contacts.write crm.objects.contacts.read
 
+springdoc:
+  swagger-ui:
+    path: /docs
+  api-docs:
+    path: /api-docs
+
+
 logging:
   level:
     root: INFO
