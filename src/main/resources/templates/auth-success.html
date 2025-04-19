@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Autenticação Realizada</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+    <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        body {
+          background: linear-gradient(135deg, #0f0f0f, #1c1c1c);
+          font-family: 'Roboto', sans-serif;
+          color: #f1f1f1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100vh;
+          text-align: center;
+          animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+          background-color: #1e1e1e;
+          border-radius: 16px;
+          padding: 2.5rem;
+          max-width: 400px;
+          width: 90%;
+          box-shadow: 0 0 20px rgba(0, 255, 120, 0.1);
+          border: 1px solid #2f2f2f;
+          animation: popIn 0.5s ease-in-out;
+        }
+
+        @keyframes popIn {
+          0% { transform: scale(0.95); opacity: 0; }
+          100% { transform: scale(1); opacity: 1; }
+        }
+
+        .logo {
+          width: 80px;
+          margin-bottom: 1rem;
+          animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+          0% { transform: scale(1); opacity: 0.9; }
+          50% { transform: scale(1.05); opacity: 1; }
+          100% { transform: scale(1); opacity: 0.9; }
+        }
+
+        .icon {
+          font-size: 3.5rem;
+          color: #4ade80;
+          margin-bottom: 1rem;
+        }
+
+        h1 {
+          font-size: 1.6rem;
+          margin-bottom: 0.5rem;
+          color: #ffffff;
+        }
+
+        p {
+          font-size: 1rem;
+          color: #c2c2c2;
+        }
+
+        footer {
+          position: absolute;
+          bottom: 1rem;
+          font-size: 0.8rem;
+          color: #666;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="icon"><i class="fas fa-circle-check"></i></div>
+    <h1>Autenticação realizada com sucesso!</h1>
+    <p>Você pode fechar esta janela com segurança.</p>
+</div>
+
+<footer>&copy; 2025 HubSpot Integration API - Desenvolvido por André Nicoletti</footer>
+</body>
+</html>
