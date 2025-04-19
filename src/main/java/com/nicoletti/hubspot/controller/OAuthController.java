@@ -5,6 +5,8 @@ import com.nicoletti.hubspot.config.HubspotProperties;
 import com.nicoletti.hubspot.dto.TokenResponseDTO;
 import com.nicoletti.hubspot.service.OAuthService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
+@Slf4j
 @RestController
 @RequestMapping("/oauth")
 @RequiredArgsConstructor
@@ -37,13 +40,15 @@ public class OAuthController {
     }
 
     @GetMapping("/callback")
-    public ResponseEntity<TokenResponseDTO> handleCallback(@RequestParam("code") String code) {
+    public RedirectView handleCallback(@RequestParam("code") String code) {
         TokenResponseDTO token = oauthService.exchangeCodeForToken(code);
 
-        // TODO chave usada é "default" podendo ser alterada por outras
-        tokenStore.storeToken("default",token.getAccessToken());
+        log.info("[token] - {}", new JSONObject(token).toString(4));
 
-        return ResponseEntity.ok(token);
+        // TODO chave usada é "default" podendo ser alterada por outras
+        tokenStore.storeToken("default", token.getAccessToken());
+
+        return new RedirectView("/auth-success.html");
     }
 
 }
