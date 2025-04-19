@@ -1,5 +1,11 @@
 # HubSpot Integration
 
+![Java](https://img.shields.io/badge/Java-21-blue?logo=java)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.4.4-brightgreen?logo=spring-boot)
+![Maven](https://img.shields.io/badge/Maven-Build-red?logo=apachemaven)
+![Swagger](https://img.shields.io/badge/Swagger_Doc-Available-informational?logo=swagger)
+![Ngrok](https://img.shields.io/badge/ngrok-Webhook_Testing-blueviolet?logo=ngrok)
+
 Projeto em Spring Boot que realiza a integração com a API do HubSpot, permitindo autenticação via OAuth2, criação e listagem de contatos, além de receber webhooks. A API é documentada com Swagger (SpringDoc OpenAPI).
 
 ---
@@ -24,6 +30,7 @@ Projeto em Spring Boot que realiza a integração com a API do HubSpot, permitin
 - [x] Listagem de contatos via `GET /contacts`
 - [x] Recebimento de webhooks `contact.creation` via `POST /webhook`
 - [x] Integração com Swagger UI em `/docs`
+- [x] Página de sucesso estilizada com logo e animação após autenticação
 
 ---
 
