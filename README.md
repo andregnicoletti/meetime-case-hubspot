@@ -1,3 +1,4 @@
+
 # HubSpot Integration
 
 ![Java](https://img.shields.io/badge/Java-21-blue?logo=java)
@@ -63,38 +64,6 @@ Acesse:
 http://localhost:8080/docs
 ```
 
-Lá você verá a documentação completa gerada via SpringDoc OpenAPI com exemplos de requisição, schemas e parâmetros.
-
-Se necessário, customize o título e descrição em `OpenApiConfig.java`:
-
-```java
-@Bean
-public OpenAPI customOpenAPI() {
-    return new OpenAPI()
-        .info(new Info()
-            .title("HubSpot Integration API")
-            .version("1.0")
-            .description("Documentação da API de integração com HubSpot"));
-}
-```
-
----
-
-## ⚙️ Configuração (application.yml)
-
-```yaml
-springdoc:
-   swagger-ui:
-      path: /docs
-hubspot:
-   client-id: ${HUBSPOT_CLIENT_ID}
-   client-secret: ${HUBSPOT_CLIENT_SECRET}
-   redirect-uri: http://localhost:8080/oauth/callback
-   auth-url: https://app.hubspot.com/oauth/authorize
-   token-url: https://api.hubapi.com/oauth/v1/token
-   scopes: crm.objects.contacts.write crm.objects.contacts.read
-```
-
 ---
 
 ## 🚀 Como executar o projeto
@@ -105,41 +74,56 @@ hubspot:
 ./mvnw clean install
 ```
 
-### 2. Rodar localmente
+### 2. Executar com o script `run.sh` (recomendado)
+
+Este projeto possui um script chamado `run.sh` que automatiza:
+
+- Exportação das variáveis de ambiente necessárias
+- Verificação e instalação do `ngrok` (se necessário)
+- Início do túnel público com o `ngrok`
+- Execução da aplicação Java
+
+#### Passos:
+
+1. Dê permissão de execução ao script:
 
 ```bash
-./mvnw spring-boot:run
+chmod +x run.sh
 ```
 
-O serviço estará disponível em `http://localhost:8080`.
+2. Edite o arquivo `run.sh` e configure as variáveis:
+
+```bash
+export APPLICATION_PORT=8080
+export HUBSPOT_CLIENT_ID="sua_client_id"
+export HUBSPOT_CLIENT_SECRET="seu_client_secret"
+```
+
+3. Execute:
+
+```bash
+./run.sh
+```
+
+A URL pública do `ngrok` será exibida no terminal ou poderá ser consultada em `http://localhost:4040`.
 
 ---
 
 ## 🌍 Testar Webhooks com ngrok
 
-### 1. Instalar ngrok
-
-```bash
-snap install ngrok
-```
-
-Ou baixe em: https://ngrok.com/download
-
-### 2. Iniciar túnel
+Caso deseje iniciar o ngrok manualmente:
 
 ```bash
 ngrok http 8080
 ```
 
-Isso gerará uma URL pública como:
+URL gerada:
 
 ```
 https://abcd1234.ngrok.io
 ```
 
-### 3. Configurar no HubSpot
-
-No painel do app, configure a URL do webhook como:
+Configure no HubSpot:
 
 ```
 https://abcd1234.ngrok.io/webhook
