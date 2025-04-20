@@ -56,6 +56,11 @@ Projeto em Spring Boot que realiza a integração com a API do HubSpot, permitin
 
 ---
 
+## 📄 Documentação da API (PDF) 
+Acesse: [Documentação Técnica (PDF)](./documentacao-tecnica-hubspot.pdf)
+
+---
+
 ## 📑 Documentação da API (Swagger)
 
 Acesse:
@@ -133,8 +138,7 @@ https://abcd1234.ngrok.io/webhook
 
 ## 📎 Referências
 
-- [HubSpot API Docs](https://developers.hubspot.com/docs/api/crm/contacts)
-- [OAuth2 Guide](https://developers.hubspot.com/docs/api/oauth)
+- [HubSpot API Docs](https://developers.hubspot.com/docs)
 - [Webhooks](https://developers.hubspot.com/docs/guides/api/app-management/webhooks)
 - [SpringDoc OpenAPI](https://springdoc.org)
 
