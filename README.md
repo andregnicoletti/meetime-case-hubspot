@@ -99,9 +99,9 @@ chmod +x run.sh
 2. Edite o arquivo `run.sh` e configure as variáveis:
 
 ```bash
-export APPLICATION_PORT=8080
-export HUBSPOT_CLIENT_ID="sua_client_id"
-export HUBSPOT_CLIENT_SECRET="seu_client_secret"
+APPLICATION_PORT=8080
+HUBSPOT_CLIENT_ID="sua_client_id"
+HUBSPOT_CLIENT_SECRET="seu_client_secret"
 ```
 
 3. Execute:
